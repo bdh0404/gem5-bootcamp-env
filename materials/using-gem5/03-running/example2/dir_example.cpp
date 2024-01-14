@@ -7,7 +7,7 @@ int main()
 {
     struct dirent *d;
     DIR *dr;
-    dr = opendir("/workspaces/gem5-bootcamp-env/materials/using-gem5/03-running");
+    dr = opendir("/mnt/d/gem5-bootcamp-env/materials/using-gem5/03-running");
     if (dr!=NULL) {
         std::cout<<"List of Files & Folders:\n";
         for (d=readdir(dr); d!=NULL; d=readdir(dr)) {

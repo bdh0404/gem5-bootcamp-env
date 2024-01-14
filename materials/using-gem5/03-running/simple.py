@@ -39,7 +39,7 @@ IMPORTANT: If you modify this file, it's likely that the Learning gem5 book
 import m5
 # import all of the SimObjects
 from m5.objects import *
-# from m5.core import setInterpDir
+from m5.core import setInterpDir
 
 # create the system we are going to simulate
 system = System()
@@ -54,7 +54,7 @@ system.mem_mode = 'timing'               # Use timing accesses
 system.mem_ranges = [AddrRange('512MB')] # Create an address range
 
 # Create a simple CPU
-system.cpu = TimingSimpleCPU()
+system.cpu = ArmTimingSimpleCPU()
 
 # Create a memory bus, a system crossbar, in this case
 system.membus = SystemXBar()
@@ -68,10 +68,10 @@ system.cpu.createInterruptController()
 
 # For x86 only, make sure the interrupts are connected to the memory
 # Note: these are directly connected to the memory bus and are not cached
-if m5.defines.buildEnv['TARGET_ISA'] == "x86":
-    system.cpu.interrupts[0].pio = system.membus.mem_side_ports
-    system.cpu.interrupts[0].int_requestor = system.membus.cpu_side_ports
-    system.cpu.interrupts[0].int_responder = system.membus.mem_side_ports
+#if m5.defines.buildEnv['TARGET_ISA'] == "x86":
+#system.cpu.interrupts[0].pio = system.membus.mem_side_ports
+#system.cpu.interrupts[0].int_requestor = system.membus.cpu_side_ports
+#system.cpu.interrupts[0].int_responder = system.membus.mem_side_ports
 
 # Create a DDR3 memory controller and connect it to the membus
 system.mem_ctrl = MemCtrl()
@@ -83,16 +83,16 @@ system.mem_ctrl.port = system.membus.mem_side_ports
 system.system_port = system.membus.cpu_side_ports
 
 # get ISA for the binary to run.
-isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
+#isa = str(m5.defines.buildEnv['TARGET_ISA']).lower()
 
 # Default to running 'hello', use the compiled ISA to find the binary
 # grab the specific path to the binary
 thispath = os.path.dirname(os.path.realpath(__file__))
 
-binary = "/workspaces/gem5-bootcamp-env/exampleBin"
+binary = "/mnt/d/gem5-bootcamp-env/materials/using-gem5/03-running/example1/exampleBin_m5_arm"
 
-# setInterpDir("/usr/aarch64-linux-genu/")
-# system.redirect_paths = [RedirectPath(app_path="/lib", host_paths=["/usr/aarch64-linux-genu/lib"])]
+setInterpDir("/usr/aarch64-linux-gnu/")
+system.redirect_paths = [RedirectPath(app_path="/lib", host_paths=["/usr/aarch64-linux-gnu/lib"])]
 
 system.workload = SEWorkload.init_compatible(binary)
 
