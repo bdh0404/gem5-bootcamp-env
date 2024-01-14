@@ -95,10 +95,11 @@ generator = LinearGenerator(
 
 motherboard = TestBoard(
     clk_freq="3GHz",
-    processor=generator,  # We pass the traffic generator as the processor.
+    generator=generator,  # We pass the traffic generator as the processor.
     memory=memory,
     cache_hierarchy=cache_hierarchy,
 )
+motherboard._pre_instantiate()
 root = Root(full_system=False, system=motherboard)
 m5.instantiate()
 generator.start_traffic()
