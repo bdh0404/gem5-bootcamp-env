@@ -3,14 +3,15 @@ from gem5.components.memory.single_channel import SingleChannelDDR3_1600
 from gem5.components.cachehierarchies.classic.no_cache import NoCache
 from gem5.components.processors.simple_processor import SimpleProcessor
 from gem5.components.processors.cpu_types import CPUTypes
-from gem5.resources.resource import CustomResource
+from gem5.resources.resource import BinaryResource
 from gem5.simulate.simulator import Simulator
+from gem5.isas import ISA
 
 # Obtain the components.
 cache_hierarchy = NoCache()
 
 memory = SingleChannelDDR3_1600("1GiB")
-processor = SimpleProcessor(cpu_type=CPUTypes.ATOMIC, num_cores=1)
+processor = SimpleProcessor(cpu_type=CPUTypes.ATOMIC, num_cores=1, isa=ISA.X86)
 
 # Add them to the board.
 board = SimpleBoard(
@@ -18,11 +19,19 @@ board = SimpleBoard(
 )
 
 # Set the workload.
-binary = CustomResource(
-    "materials/using-gem5/02-stdlib/m5-exit-example/m5-exit-example"
+binary = BinaryResource(
+    local_path="materials/using-gem5/02-stdlib/m5-exit-example/m5-exit-example"
 )
 board.set_se_binary_workload(binary)
 
 # Setup the Simulator and run the simulation.
 simulator = Simulator(board=board)
+simulator.run()
+
+print("We can do stuff after an m5 exit event. Prior to continuing the simulation")
+
+simulator.run()
+
+print("And again...")
+
 simulator.run()
