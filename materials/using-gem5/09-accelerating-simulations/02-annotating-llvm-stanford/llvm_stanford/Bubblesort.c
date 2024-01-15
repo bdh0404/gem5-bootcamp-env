@@ -1,6 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define GEM5
+
+#ifdef GEM5
+#include <gem5/m5ops.h>
+#endif
+
 #define  nil		0
 #define	 false		0
 #define  true		1
@@ -142,6 +148,10 @@ void Bubble(int run) {
 	int i, j;
 	bInitarr();
 	top=srtelements;
+
+#ifdef GEM5
+	m5_work_begin(0, 0);
+#endif
 	while ( top>1 ) {
 
 		i=1;
@@ -160,6 +170,10 @@ void Bubble(int run) {
 	if ( (sortlist[1] != littlest) || (sortlist[srtelements] != biggest) )
 	printf ( "Error3 in Bubble.\n");
 	printf("\n%d\n", sortlist[run + 1]);
+#ifdef GEM5
+	m5_work_end(0, 0);
+	m5_exit(0);
+#endif
 }
 
 int main()

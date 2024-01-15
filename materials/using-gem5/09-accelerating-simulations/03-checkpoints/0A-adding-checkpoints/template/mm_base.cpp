@@ -7,6 +7,12 @@
 #include<iostream>
 #include<chrono>
 
+#define GEM5
+
+#ifdef GEM5
+#include <gem5/m5ops.h>
+#endif
+
 void out_of_range() {
     std :: cout << "error: the size of the matrix should be 1 to " << UINT_MAX
         << std :: endl;
@@ -59,10 +65,18 @@ int main(int argc, char *argv[]) {
     //
     auto mm_start = std :: chrono :: high_resolution_clock :: now();
 
+#ifdef GEM5
+    m5_checkpoint(0, 0);
+#endif
+
     for(int i = 0 ; i < N ; i++)
         for(int j = 0 ; j < N ; j++)
             for(int k = 0 ; k < N ; k++)
                 C[i][j] += A[i][k] * B[k][j];
+
+#ifdef GEM5
+    m5_checkpoint(0, 0);
+#endif
     auto mm_end = std :: chrono :: high_resolution_clock :: now();
 
     // Free the memory allocated.

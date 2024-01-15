@@ -60,7 +60,7 @@ from gem5.components.processors.simple_switchable_processor import(
 from gem5.components.processors.cpu_types import CPUTypes
 from gem5.isas import ISA
 from gem5.coherence_protocol import CoherenceProtocol
-from gem5.resources.resource import Resource, CustomResource, CustomDiskImageResource
+from gem5.resources.resource import obtain_resource, CustomResource, CustomDiskImageResource
 
 from m5.stats.gem5stats import get_simstat
 from m5.util import warn
@@ -198,22 +198,22 @@ board.set_kernel_disk_workload(
     # `~/.cache/gem5` directory if not already present.
     # npb benchamarks was tested with kernel version 4.19.83
 
-    # kernel=Resource(
-    #     "x86-linux-kernel-4.19.83",
-    # ),
-    kernel=CustomResource(
-        "PATH_TO_YOUR_KERNEL",
+    kernel=Resource(
+        "x86-linux-kernel-4.19.83",
     ),
+    #kernel=CustomResource(
+        #"PATH_TO_YOUR_KERNEL",
+    #),
 
     # The x86-npb image will be automatically downloaded to the
     # `~/.cache/gem5` directory if not already present.
 
-    # disk_image=Resource(
-    #     "x86-npb",
-    # ),
-    disk_image=CustomResource(
-         "PATH_TO_YOUR_DISK_IMG",
+    disk_image=obtain_resource(
+        "x86-npb",
     ),
+    #disk_image=CustomResource(
+    #     "PATH_TO_YOUR_DISK_IMG",
+    #),
 
     # disk_image=CustomDiskImageResource(
     #      "PATH_TO_YOUR_DISK_IMG",

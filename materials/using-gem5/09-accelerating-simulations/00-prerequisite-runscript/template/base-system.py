@@ -60,7 +60,7 @@ from gem5.utils.requires import requires
 
 # We will use CustomResource to load the program in gem5.
 
-from gem5.resources.resource import CustomResource
+from gem5.resources.resource import BinaryResource
 
 # We import various parameters of the machine.
 
@@ -117,7 +117,8 @@ requires(
 # imported. Replace the NoCache() cache_hierarchy with classic two two level
 # caches.
 
-cache_hierarchy = NoCache()
+cache_hierarchy = PrivateL1PrivateL2CacheHierarchy(l1d_size="16kB",
+    l1i_size="16kB", l2_size="256kB")
 
 # TODO: *Task II*
 #
@@ -126,7 +127,7 @@ cache_hierarchy = NoCache()
 # SingleChannelDDR3_1600(size="1GB") memory with the correct memory method. We
 # also want our system to have 2GB of memory.
 
-memory = SingleChannelDDR3_1600(size="1GB")
+memory = DualChannelDDR4_2400(size="2GB")
 
 # TODO: *Task III*
 #
@@ -134,7 +135,7 @@ memory = SingleChannelDDR3_1600(size="1GB")
 # detailed timing CPU for this system. The CPU is called TIMING.
 
 processor = SimpleProcessor(
-    cpu_type = CPUTypes.ATOMIC,
+    cpu_type = CPUTypes.TIMING,
     isa = ISA.X86,
     num_cores = 1
 )
@@ -152,7 +153,7 @@ board = SimpleBoard(
 # Here we set the workload.
 
 board.set_se_binary_workload(
-    CustomResource(
+    BinaryResource(
         os.path.join(
             os.getcwd(),
             args.binary

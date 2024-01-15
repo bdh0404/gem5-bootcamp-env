@@ -6,7 +6,7 @@ TARGET_ISA=x86
 # On prder to get the GEM5_HOME variable working, this Makefile requires
 # realpath ot be installed.
 
-GEM5_HOME=/home/gem5/gem5
+GEM5_HOME=/mnt/d/gem5-bootcamp-env/gem5
 $(info   GEM5_HOME is $(GEM5_HOME))
 
 # Using g++ as the only compiler.
@@ -28,7 +28,7 @@ OBJECTS=mm_checkpoint
 all: mm_checkpoint
 
 mm_checkpoint:
-	$(CXX) -o $(OBJECTS) mm_checkpoint.cpp $(CFLAGS) $(LDFLAGS)
+	$(CXX) -o $(OBJECTS) mm_ckpt.cpp $(CFLAGS) $(LDFLAGS)
 
 clean:
 	rm -f $(OBJECTS)

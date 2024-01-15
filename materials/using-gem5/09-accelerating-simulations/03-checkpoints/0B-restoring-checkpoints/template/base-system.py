@@ -60,7 +60,7 @@ from gem5.utils.requires import requires
 
 # We will use CustomResource to load the program in gem5.
 
-from gem5.resources.resource import CustomResource
+from gem5.resources.resource import BinaryResource
 
 # We import various parameters of the machine.
 
@@ -142,7 +142,7 @@ board = SimpleBoard(
 # Here we set the workload.
 
 board.set_se_binary_workload(
-    CustomResource(
+    BinaryResource(
         os.path.join(
             os.getcwd(),
             args.binary
@@ -152,8 +152,9 @@ board.set_se_binary_workload(
 
 # Lastly we instantiate the simulator module and simulate the program.
 
-simulator = Simulator(board=board)
-simulator.run()
+simulator = Simulator(board=board, checkpoint_path=os.path.join(os.getcwd(),
+    "checkpoint-directory"))
+simulator.run(max_ticks = 1000000000000)
 
 # We acknowledge the user that the simulation has ended.
 
@@ -163,3 +164,5 @@ print(
         simulator.get_last_exit_event_cause(),
     )
 )
+
+#simulator.save_checkpoint("checkpoint-directory")
